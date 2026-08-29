@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "site_id": "REPLACE_WITH_APPROVED_SITE",
+  "approved": false,
+  "center": {
+    "latitude_deg": null,
+    "longitude_deg": null
+  },
+  "home": {
+    "latitude_deg": null,
+    "longitude_deg": null
+  },
+  "heading_deg": 0.0,
+  "camera_calibration_sha256": null,
+  "allowed_altitudes_m": [40.0, 150.0],
+  "geofence": {
+    "radius_m": 225.0,
+    "maximum_altitude_m": 170.0
+  },
+  "rtl": {
+    "enabled": true,
+    "altitude_m": 30.0
+  },
+  "time_sync": {
+    "required": true,
+    "maximum_offset_ms": 20.0
+  },
+  "rtk": {
+    "mode": "ppk",
+    "minimum_solution_quality": "fixed"
+  }
+}

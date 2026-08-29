@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "suite_id": "vins-mono-square-250-2k-pose-graph-smoke",
+  "display_name": "Інженерний smoke VINS‑Mono Pose Graph на квадраті 2 км",
+  "vins_configuration_id": "vins-neo-imx477-cs2006-nominal",
+  "continue_on_fail": true,
+  "execution_backend": "simulation",
+  "reference": {
+    "source": "sim_truth",
+    "used_as_vins_input": false
+  },
+  "runtime_requirements": {
+    "ardupilot": {
+      "product": "ArduCopter",
+      "version": "4.7.0",
+      "source_commit": "1511f27194f1dcc3728270883047bdf022b3fd53"
+    }
+  },
+  "configurations": [
+    {
+      "configuration_id": "pg-smoke-1-disabled",
+      "profile": "../configurations/pose-graph-campaign/pg-smoke-1-disabled.json"
+    },
+    {
+      "configuration_id": "pg-smoke-2-loop",
+      "profile": "../configurations/pose-graph-campaign/pg-smoke-2-loop.json"
+    },
+    {
+      "configuration_id": "pg-smoke-3-map_build",
+      "profile": "../configurations/pose-graph-campaign/pg-smoke-3-map_build.json"
+    },
+    {
+      "configuration_id": "pg-smoke-4-map_reuse_only",
+      "profile": "../configurations/pose-graph-campaign/pg-smoke-4-map_reuse_only.json"
+    },
+    {
+      "configuration_id": "pg-smoke-5-loop_and_map_reuse",
+      "profile": "../configurations/pose-graph-campaign/pg-smoke-5-loop_and_map_reuse.json"
+    }
+  ]
+}

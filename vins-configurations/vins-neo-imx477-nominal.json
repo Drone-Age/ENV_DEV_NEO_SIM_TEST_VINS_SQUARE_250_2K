@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "vins-neo-imx477-cs2006-nominal",
+  "display_name": "Номінальна конфігурація VINS‑NEO / IMX477 + CS2006ZM06",
+  "implementation": "Drone-Age/VINS-NEO",
+  "product_version": "1.1.0.0",
+  "runtime_config_path": "../../../ros_ws/src/vins_sim_bringup/config/vins_smoke.yaml",
+  "runtime_config_sha256": "69d536dc0a2b7af9c714ba961ca6bcba6edf789826edc9746a4fa667265f0d6a",
+  "camera_profile": {
+    "sensor": "Raspberry Pi HQ / IMX477",
+    "lens": "Arducam CS2006ZM06 6 mm",
+    "projection": "PINHOLE",
+    "resolution": [640, 480],
+    "fps": 30,
+    "horizontal_fov_rad": 1.1344640138,
+    "intrinsics": [502.299385, 502.299385, 320.0, 240.0],
+    "distortion": [0.0, 0.0, 0.0, 0.0]
+  },
+  "vins_parameters": {
+    "max_features": 260,
+    "minimum_feature_distance_px": 20,
+    "feature_publish_rate_hz": 20,
+    "keyframe_parallax_px": 8.0,
+    "max_solver_time_s": 0.05,
+    "max_solver_iterations": 8,
+    "estimate_time_offset": false,
+    "time_offset_s": 0.0,
+    "rolling_shutter": false,
+    "velocity_fusion": false,
+    "accelerometer_bias_random_walk": 0.0002,
+    "gyroscope_bias_random_walk": 0.00002
+  },
+  "deployment_compatibility": {
+    "simulation": "qualified_runtime_yaml",
+    "real_vehicle": "requires_device_specific_calibration_hash_before_arm",
+    "reference_is_measurement_input": false
+  },
+  "notes": [
+    "Симуляційні K/D не є калібруванням реальної камери; real_vehicle працює fail-closed без device-specific calibration hash.",
+    "Точний hash runtime YAML забезпечує відтворюваність порівняльних запусків."
+  ]
+}

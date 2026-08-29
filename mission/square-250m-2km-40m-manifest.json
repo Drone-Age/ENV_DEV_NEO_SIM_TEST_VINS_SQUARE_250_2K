@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "issue": "https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/1",
+  "site_id": "simulation-default",
+  "files": {
+    "square-250m-2km-40m.waypoints": "1a3c8f17534e908cf45e9e672f071222b64480f8d4ca608d4740bcd8049b2356",
+    "square-250m-2km-40m-route.json": "f4388d174baf87a92877527735479539f505712e0c834001b87e1dfd30929b87"
+  }
+}

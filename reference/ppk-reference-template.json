@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "source": "ppk_gnss",
+  "used_as_vins_input": false,
+  "coverage_fraction": 0.0,
+  "minimum_solution_quality": "fixed",
+  "time_base": "REPLACE_WITH_UTC_OR_GPS",
+  "maximum_time_offset_ms": 20.0,
+  "epochs_file": "REPLACE_WITH_REFERENCE_FILE"
+}
