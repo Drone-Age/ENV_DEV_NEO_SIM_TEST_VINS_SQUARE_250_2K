@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "configurations" / "pose-graph-campaign"
 TEST_ID = "VINS-POSE-GRAPH-SQUARE-250-2K-QUALIFICATION"
-TEST_VERSION = "1.0.2"
+TEST_VERSION = "1.0.3"
 TEST_REPOSITORY = "Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K"
 ARDUPILOT_REQUIREMENT = {
     "product": "ArduCopter",
@@ -55,6 +55,11 @@ def main():
 
     def add(stage, mode, target, seed, source=None, pair=None, order=None):
         profile = deepcopy(base)
+        # Engineering smoke gates belong only to the five smoke profiles
+        # assembled below.  Inheriting the disabled identity gate into an
+        # official loop/reuse run would classify a valid correction as a
+        # disabled-mode failure.
+        profile.pop("engineering_smoke_expectations", None)
         identifier = run_id(stage, mode, target, seed, source)
         profile["configuration_id"] = identifier
         profile["vins_configuration_file"] = "../../vins-configurations/vins-neo-imx477-nominal.json"

@@ -70,7 +70,7 @@ def test_contract_identity_and_governance():
     assert contract["backends"] == ["simulation", "real_vehicle"]
     assert contract["issue"] == ISSUE
     assert contract["coordination_issue"].endswith("/issues/12")
-    assert (ROOT / "VERSION").read_text().strip() == "1.0.2"
+    assert (ROOT / "VERSION").read_text().strip() == "1.0.3"
 
 
 def test_launcher_uses_canonical_latest_run_directory():
@@ -131,6 +131,11 @@ def test_campaign_has_exact_42_fixed_runs():
     assert suite["retry_policy"] == "startup_retry_before_arm_only"
     assert suite["runtime_requirements"]["ardupilot"]["version"] == "4.7.0"
     assert suite["runtime_requirements"]["ardupilot"]["source_commit"] == ARDUPILOT_COMMIT
+    assert all(
+        "engineering_smoke_expectations" not in profile
+        for profile in profiles()
+        if not profile["configuration_id"].startswith("pg-smoke-")
+    )
 
 
 def test_smoke_has_all_five_modes():

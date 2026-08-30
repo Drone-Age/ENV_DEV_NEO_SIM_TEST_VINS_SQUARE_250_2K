@@ -1,5 +1,17 @@
 # Історія змін
 
+## 1.0.3 — ізоляція smoke-критеріїв
+
+- `engineering_smoke_expectations` більше не успадковується 42 офіційними
+  профілями кампанії.
+- Identity gate для `disabled` не може помилково класифікувати коректний
+  `loop`, `map_reuse_only` або комбінований corrected stream як FAIL.
+- Польоти версії 1.0.2 зберігаються як engineering evidence; офіційна
+  кампанія починається заново з точними profile SHA-256 версії 1.0.3.
+
+Issue: https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/1
+Координація: https://github.com/Drone-Age/ENV_DEV_NEO_SIM1/issues/12
+
 ## 1.0.2 — канонічне володіння evidence
 
 - Route qualification автоматично зберігає evidence у `logs/` того тестового

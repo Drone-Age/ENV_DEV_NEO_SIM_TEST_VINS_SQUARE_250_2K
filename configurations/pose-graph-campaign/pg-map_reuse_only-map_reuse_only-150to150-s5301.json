@@ -1,7 +1,7 @@
 {
   "schema": 2,
   "test_id": "VINS-POSE-GRAPH-SQUARE-250-2K-QUALIFICATION",
-  "test_version": "1.0.2",
+  "test_version": "1.0.3",
   "test_repository": "Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K",
   "runtime_requirements": {
     "ardupilot": {
@@ -212,12 +212,6 @@
     "include_live_accuracy_windows": true,
     "include_route_charts": true,
     "open_pdf_after_test": true
-  },
-  "engineering_smoke_expectations": {
-    "require_match": false,
-    "required_match_source": null,
-    "require_corrected_change_after_match": false,
-    "require_identity_when_disabled": true
   },
   "execution_backend": "simulation",
   "backend_contracts": {
