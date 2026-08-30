@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "configurations" / "pose-graph-campaign"
 TEST_ID = "VINS-POSE-GRAPH-SQUARE-250-2K-QUALIFICATION"
-TEST_VERSION = "1.0.8"
+TEST_VERSION = "1.0.9"
 TEST_REPOSITORY = "Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K"
 ARDUPILOT_REQUIREMENT = {
     "product": "ArduCopter",
@@ -110,6 +110,7 @@ def main():
             "candidate_selection": (
                 "best_score" if mode in {"loop", "map_build", "loop_and_map_reuse"} else "oldest"
             ),
+            "min_fundamental_inlier_ratio": 0.30,
             "loaded_map_match_deadline_progress_m": 100.0,
             "current_session_match_start_progress_m": 1000.0,
             "current_session_match_deadline_progress_m": 1100.0,
@@ -230,6 +231,7 @@ def main():
             "candidate_selection": (
                 "best_score" if mode in {"loop", "map_build", "loop_and_map_reuse"} else "oldest"
             ),
+            "min_fundamental_inlier_ratio": 0.30,
             "loaded_map_match_deadline_progress_m": 100.0,
             "current_session_match_start_progress_m": 1000.0,
             "current_session_match_deadline_progress_m": 1100.0,

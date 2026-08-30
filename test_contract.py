@@ -70,7 +70,7 @@ def test_contract_identity_and_governance():
     assert contract["backends"] == ["simulation", "real_vehicle"]
     assert contract["issue"] == ISSUE
     assert contract["coordination_issue"].endswith("/issues/12")
-    assert (ROOT / "VERSION").read_text().strip() == "1.0.8"
+    assert (ROOT / "VERSION").read_text().strip() == "1.0.9"
 
 
 def test_launcher_uses_canonical_latest_run_directory():
@@ -175,6 +175,7 @@ def test_match_windows_are_lap_aware():
             else 50
         )
         assert pose["candidate_exclusion_keyframes"] == expected_exclusion
+        assert pose["min_fundamental_inlier_ratio"] == 0.30
         expected_selection = (
             "best_score"
             if pose["mode"] in {"loop", "map_build", "loop_and_map_reuse"}

@@ -1,5 +1,19 @@
 # Історія змін
 
+## 1.0.9 — профільований поріг для раннього Loop Closure
+
+- Додано явний параметр профілю `min_fundamental_inlier_ratio=0.30`, який
+  однаково передається через execution adapter у SIM і контракт реального дрона.
+- Поріг калібровано за evidence v1.0.8: правильні кандидати на початку другого
+  кола мали 29–35 PnP-inlier, reprojection RMSE 1,38–1,93 px, cheirality 100%,
+  але fundamental ratio 0,31–0,40 при типовому порозі 0,45.
+- Мінімальна кількість Fundamental/PnP-inlier, reprojection, cheirality,
+  просторовий розподіл, relative pose та трипослідовний consistency gate не
+  послаблюються.
+
+Issue: https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/1
+Координація: https://github.com/Drone-Age/ENV_DEV_NEO_SIM1/issues/12
+
 ## 1.0.8 — виключення DBoW reference neighbor
 
 - Політика `best_score` більше не може вибрати `ret[0]`: DBoW повертає там
