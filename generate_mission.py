@@ -14,6 +14,7 @@ DEFAULT_CENTER_LON = 31.137054110768155
 EARTH_RADIUS_M = 6378137.0
 SIDE_M = 250.0
 LAPS = 2
+DISTANCE_ASSURANCE_TAIL_M = 20.0
 
 
 def rotate(x_m: float, y_m: float, heading_deg: float) -> tuple[float, float]:
@@ -113,6 +114,19 @@ def generate_square(
             sequence = add(0, 3, 16, lat=lat, lon=lon, alt=altitude_id)
             if route_start is None:
                 route_start = sequence
+        # ArduCopter rounds square corners inside its waypoint acceptance
+        # radius.  A closed out-and-back tail after both complete laps keeps
+        # the endpoint unchanged and guarantees the >=2000 m truth gate.
+        second = points[1]
+        scale = DISTANCE_ASSURANCE_TAIL_M / SIDE_M
+        tail_x = first["x_m"] + (second["x_m"] - first["x_m"]) * scale
+        tail_y = first["y_m"] + (second["y_m"] - first["y_m"]) * scale
+        tail_lat, tail_lon = geodetic(tail_x, tail_y, center_lat, center_lon)
+        add(0, 3, 16, lat=tail_lat, lon=tail_lon, alt=altitude_id)
+        first_lat, first_lon = geodetic(
+            first["x_m"], first["y_m"], center_lat, center_lon
+        )
+        add(0, 3, 16, lat=first_lat, lon=first_lon, alt=altitude_id)
         add(0, 0, 20)
         return route_start
 
@@ -130,6 +144,9 @@ def generate_square(
         "lap_distance_m": SIDE_M * 4,
         "route_distance_m": path_distance(points),
         "required_reference_distance_m": 2000.0,
+        "distance_assurance_tail_m": DISTANCE_ASSURANCE_TAIL_M * 2.0,
+        "mission_planned_distance_m": path_distance(points) + DISTANCE_ASSURANCE_TAIL_M * 2.0,
+        "distance_assurance_tail_excluded_from_lap_metrics": True,
         "route_start_sequence": route_start,
         "approach_excluded": True,
         "center": {"latitude_deg": center_lat, "longitude_deg": center_lon},

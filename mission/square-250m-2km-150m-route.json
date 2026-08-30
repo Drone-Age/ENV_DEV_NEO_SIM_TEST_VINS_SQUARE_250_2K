@@ -9,6 +9,9 @@
   "lap_distance_m": 1000.0,
   "route_distance_m": 2000.0,
   "required_reference_distance_m": 2000.0,
+  "distance_assurance_tail_m": 40.0,
+  "mission_planned_distance_m": 2040.0,
+  "distance_assurance_tail_excluded_from_lap_metrics": true,
   "route_start_sequence": 12,
   "approach_excluded": true,
   "center": {
@@ -18,7 +21,7 @@
   "heading_deg": 0.0,
   "maximum_corner_radius_from_center_m": 176.7766952966369,
   "site_id": "simulation-default",
-  "mission_sha256": "bb03206f86d5aad80a394bbe061d50e51235b1f05506e58aea42820d7f40744d",
+  "mission_sha256": "3154838695fe3b7d853ebed40ff48ae95b3a0cc335bbf7b54b251fa81cffa1f6",
   "points": [
     {
       "x_m": -125.0,

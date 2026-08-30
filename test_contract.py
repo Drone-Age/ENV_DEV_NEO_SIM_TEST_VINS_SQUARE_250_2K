@@ -70,7 +70,7 @@ def test_contract_identity_and_governance():
     assert contract["backends"] == ["simulation", "real_vehicle"]
     assert contract["issue"] == ISSUE
     assert contract["coordination_issue"].endswith("/issues/12")
-    assert (ROOT / "VERSION").read_text().strip() == "1.0.0"
+    assert (ROOT / "VERSION").read_text().strip() == "1.0.1"
 
 
 @pytest.mark.parametrize("altitude", [150, 40])
@@ -84,6 +84,9 @@ def test_canonical_square_contract(altitude):
     assert route["lap_distance_m"] == 1000.0
     assert route["route_distance_m"] == 2000.0
     assert route["required_reference_distance_m"] == 2000.0
+    assert route["distance_assurance_tail_m"] == 40.0
+    assert route["mission_planned_distance_m"] == 2040.0
+    assert route["distance_assurance_tail_excluded_from_lap_metrics"] is True
     assert route["approach_excluded"] is True
     assert route["route_start_sequence"] == 12
     assert len(route["points"]) == 9
@@ -94,6 +97,8 @@ def test_canonical_square_contract(altitude):
     assert route["mission_sha256"] == digest
     assert manifest["files"][mission.name] == digest
     assert manifest["issue"] == ISSUE
+    rows = mission.read_text(encoding="ascii").splitlines()
+    assert len(rows) == 1 + 24
 
 
 def test_square_rotation_preserves_exact_distance(tmp_path):

@@ -3,7 +3,7 @@
   "issue": "https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/1",
   "site_id": "simulation-default",
   "files": {
-    "square-250m-2km-150m.waypoints": "bb03206f86d5aad80a394bbe061d50e51235b1f05506e58aea42820d7f40744d",
-    "square-250m-2km-150m-route.json": "366c6b84a891564967df2c165acbb73bcccd627e399e7ff5edb6195db3373043"
+    "square-250m-2km-150m.waypoints": "3154838695fe3b7d853ebed40ff48ae95b3a0cc335bbf7b54b251fa81cffa1f6",
+    "square-250m-2km-150m-route.json": "82ee4c67e440f3f372839f0d707351e677e7cdda8892e1645964643f4985d436"
   }
 }
