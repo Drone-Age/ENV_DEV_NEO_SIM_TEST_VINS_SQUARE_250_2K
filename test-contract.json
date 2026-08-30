@@ -2,7 +2,7 @@
   "schema": 1,
   "test_id": "VINS-POSE-GRAPH-SQUARE-250-2K-QUALIFICATION",
   "name": "VINS_SQUARE_250_2K_POSE_GRAPH_QUALIFICATION",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "repository": "Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K",
   "parent_repository": "Drone-Age/ENV_DEV_NEO_SIM1",
   "submodule_path": "tests/vins_square_250_2k",
@@ -18,7 +18,7 @@
     "backend_contract": "backend_contract.py"
   },
   "backends": ["simulation", "real_vehicle"],
-  "release_tag": "v1.0.5",
+  "release_tag": "v1.0.6",
   "issue": "https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/1",
   "coordination_issue": "https://github.com/Drone-Age/ENV_DEV_NEO_SIM1/issues/12"
 }
