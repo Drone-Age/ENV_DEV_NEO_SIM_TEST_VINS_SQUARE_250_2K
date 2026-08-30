@@ -32,5 +32,8 @@ $startup = '[env-neo] ERROR: Gazebo exited before becoming ready; camera topic d
 Assert-Equal $true (Test-PreArmStartupFailure -ExitCode 1 -Transcript $startup) 'Proven pre-ARM startup failure must be retryable.'
 Assert-Equal $false (Test-PreArmStartupFailure -ExitCode 1 -Transcript $startup -RunEvidence 'mission_stage=ARMED') 'No retry is allowed after ARM.'
 Assert-Equal $false (Test-PreArmStartupFailure -ExitCode 1 -Transcript 'qualification failed') 'Unproven failures must not be retried.'
+$gatewayStartup = '[env-neo] ERROR: SIM Gateway published no status sample.'
+Assert-Equal $true (Test-PreArmStartupFailure -ExitCode 1 -Transcript $gatewayStartup) 'Explicit Gateway pre-ARM status timeout must be retryable.'
+Assert-Equal $false (Test-PreArmStartupFailure -ExitCode 1 -Transcript $gatewayStartup -RunEvidence '"event": "GATEWAY_LOITER_BOOTSTRAP_STARTED"') 'Gateway failure after ARM must never be retried.'
 
 Write-Host 'OK launcher contracts'

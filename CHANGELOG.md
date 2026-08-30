@@ -1,5 +1,19 @@
 # Історія змін
 
+## 1.0.4 — повний pre-ARM startup retry contract
+
+- Явний `SIM Gateway published no status sample` класифікується як доведена
+  startup failure і допускає один чистий retry до ARM.
+- Класифікатор охоплює Gazebo, SITL, camera, ROS bridge, SIM Gateway,
+  iMAVROS і VINS, але лише з точними timeout/not-ready формулюваннями.
+- Будь-яка ознака `GATEWAY_LOITER_BOOTSTRAP_STARTED` або `armed=true` і надалі
+  забороняє retry.
+- Evidence v1.0.3 зберігається; офіційна кампанія запускається з profile
+  SHA-256 v1.0.4.
+
+Issue: https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/1
+Координація: https://github.com/Drone-Age/ENV_DEV_NEO_SIM1/issues/12
+
 ## 1.0.3 — ізоляція smoke-критеріїв
 
 - `engineering_smoke_expectations` більше не успадковується 42 офіційними

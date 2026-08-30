@@ -59,7 +59,7 @@ function Test-PreArmStartupFailure {
         return $false
     }
 
-    $startupFailure = $Transcript -match '(?is)(Gazebo|SITL|camera|ROS bridge).{0,160}(exited before becoming ready|did not appear|did not remain alive|timed out waiting)'
+    $startupFailure = $Transcript -match '(?is)(Gazebo|SITL|camera|ROS bridge|SIM Gateway|iMAVROS|VINS).{0,200}(exited before becoming ready|did not appear|did not remain alive|timed out waiting|published no [^\r\n]*sample)'
     return [bool]$startupFailure
 }
 

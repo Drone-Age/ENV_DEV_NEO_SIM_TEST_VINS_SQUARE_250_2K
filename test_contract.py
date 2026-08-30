@@ -70,7 +70,7 @@ def test_contract_identity_and_governance():
     assert contract["backends"] == ["simulation", "real_vehicle"]
     assert contract["issue"] == ISSUE
     assert contract["coordination_issue"].endswith("/issues/12")
-    assert (ROOT / "VERSION").read_text().strip() == "1.0.3"
+    assert (ROOT / "VERSION").read_text().strip() == "1.0.4"
 
 
 def test_launcher_uses_canonical_latest_run_directory():
