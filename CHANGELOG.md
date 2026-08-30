@@ -1,5 +1,17 @@
 # Історія змін
 
+## 1.0.8 — виключення DBoW reference neighbor
+
+- Політика `best_score` більше не може вибрати `ret[0]`: DBoW повертає там
+  найновіший сусідній кадр лише як reference score, а не як loop-кандидат.
+- `candidate_exclusion_keyframes=400` тепер діє разом із `best_score` так, як
+  передбачає upstream VINS-Mono: вибір виконується тільки серед `ret[1…]`.
+- Evidence v1.0.7 збережено як інженерний невдалий запуск: 192 локальні збіги,
+  нуль qualified міжколових match і відсутність покращення corrected RMSE.
+
+Issue: https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/1
+Компонент: https://github.com/Drone-Age/VINS-NEO/issues/28
+
 ## 1.0.7 — геометрична перевірка найкращого DBoW-кандидата
 
 - Активні режими поточної сесії використовують `candidate_selection=best_score`.
