@@ -1,5 +1,13 @@
 # Історія змін
 
+## 1.0.7 — геометрична перевірка найкращого DBoW-кандидата
+
+- Активні режими поточної сесії використовують `candidate_selection=best_score`.
+- Upstream-сумісна політика `oldest` залишається типовою для решти режимів.
+- Fundamental/PnP, cheirality, quadrant і consistency gates не послаблено.
+
+Issue: https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/1
+
 ## 1.0.6 — виключення одного повного кола
 
 - Збільшено `candidate_exclusion_keyframes` до 400 для активних режимів із

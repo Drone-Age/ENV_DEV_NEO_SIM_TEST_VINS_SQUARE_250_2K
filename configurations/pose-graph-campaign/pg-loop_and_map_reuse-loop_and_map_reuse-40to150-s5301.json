@@ -1,7 +1,7 @@
 {
   "schema": 2,
   "test_id": "VINS-POSE-GRAPH-SQUARE-250-2K-QUALIFICATION",
-  "test_version": "1.0.6",
+  "test_version": "1.0.7",
   "test_repository": "Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K",
   "runtime_requirements": {
     "ardupilot": {
@@ -44,6 +44,7 @@
     "target_altitude_m": 150.0,
     "false_match_truth_distance_m": 20.0,
     "candidate_exclusion_keyframes": 400,
+    "candidate_selection": "best_score",
     "loaded_map_match_deadline_progress_m": 100.0,
     "current_session_match_start_progress_m": 1000.0,
     "current_session_match_deadline_progress_m": 1100.0
