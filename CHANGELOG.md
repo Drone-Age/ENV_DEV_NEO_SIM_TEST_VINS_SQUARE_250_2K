@@ -1,5 +1,16 @@
 # Історія змін
 
+## 1.0.5 — ранній Loop Closure і повне corrected evidence
+
+- Додано підписаний параметр `candidate_exclusion_keyframes`: 250 keyframes
+  для режимів із loop поточної сесії та 50 для решти режимів.
+- Усунуто домінування недавніх DBoW-кандидатів на довгих повторних сторонах
+  квадрата без послаблення геометричної перевірки match.
+- Метрики відновлюють corrected-пари, які надійшли із запізненням, лише за
+  тотожним source timestamp; окремий evidence-файл фіксує кожне відновлення.
+- Зміни виконано за
+  `https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/1`.
+
 ## 1.0.4 — повний pre-ARM startup retry contract
 
 - Явний `SIM Gateway published no status sample` класифікується як доведена
