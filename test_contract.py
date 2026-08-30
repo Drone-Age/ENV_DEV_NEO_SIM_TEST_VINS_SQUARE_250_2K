@@ -70,7 +70,14 @@ def test_contract_identity_and_governance():
     assert contract["backends"] == ["simulation", "real_vehicle"]
     assert contract["issue"] == ISSUE
     assert contract["coordination_issue"].endswith("/issues/12")
-    assert (ROOT / "VERSION").read_text().strip() == "1.0.1"
+    assert (ROOT / "VERSION").read_text().strip() == "1.0.2"
+
+
+def test_launcher_uses_canonical_latest_run_directory():
+    launcher = (ROOT / "run-test.ps1").read_text(encoding="utf-8")
+    assert "function Get-LatestEvidenceDirectory" in launcher
+    assert "flight-evidence\\$runId" not in launcher
+    assert "Copy-Item (Join-Path $evidence '*')" not in launcher
 
 
 @pytest.mark.parametrize("altitude", [150, 40])

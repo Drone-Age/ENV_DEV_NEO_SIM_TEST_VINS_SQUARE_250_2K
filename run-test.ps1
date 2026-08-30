@@ -80,6 +80,23 @@ function Find-ValidCompletedRun {
     return $matches | Sort-Object CompletedAt | Select-Object -Last 1
 }
 
+function Convert-WslPathToWindowsPath {
+    param([Parameter(Mandatory)][string]$Path)
+    if ($Path -match '^/mnt/([a-zA-Z])/(.*)$') {
+        return ('{0}:\{1}' -f $Matches[1].ToUpperInvariant(), $Matches[2].Replace('/', '\'))
+    }
+    return $Path
+}
+
+function Get-LatestEvidenceDirectory {
+    $latestRunDirectoryState = Join-Path $repoRoot '.runtime\state\latest_run_dir'
+    if (-not (Test-Path -LiteralPath $latestRunDirectoryState -PathType Leaf)) { return $null }
+    $runtimeDirectory = Convert-WslPathToWindowsPath `
+        -Path ((Get-Content -Raw -LiteralPath $latestRunDirectoryState).Trim())
+    if (-not (Test-Path -LiteralPath $runtimeDirectory -PathType Container)) { return $null }
+    return (Split-Path -Parent $runtimeDirectory)
+}
+
 $configurationFiles = @(Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'configurations') -Filter '*.json' -File -Recurse -ErrorAction SilentlyContinue)
 if ($ListConfigurations) {
     $profiles = @((Get-Item -LiteralPath (Join-Path $PSScriptRoot 'profile.json'))) + $configurationFiles
@@ -221,9 +238,10 @@ for ($attempt = 1; $attempt -le 2; $attempt++) {
     $attemptRunId = if (Test-Path $latestState) { (Get-Content -Raw $latestState).Trim() } else { $null }
     $runEvidence = ''
     if ($attemptRunId) {
+        $attemptEvidence = Get-LatestEvidenceDirectory
         $evidenceCandidates = @(
             (Join-Path $repoRoot ".runtime\runs\$attemptRunId\stack.log"),
-            (Join-Path $repoRoot "flight-evidence\$attemptRunId\raw\scenario-events.jsonl")
+            $(if ($attemptEvidence) { Join-Path $attemptEvidence 'raw\scenario-events.jsonl' })
         )
         foreach ($candidate in $evidenceCandidates) {
             if (Test-Path -LiteralPath $candidate -PathType Leaf) {
@@ -244,16 +262,11 @@ for ($attempt = 1; $attempt -le 2; $attempt++) {
 }
 $runId = if (Test-Path $latestState) { (Get-Content -Raw $latestState).Trim() } else { $null }
 if ($runId -and $runId -ne $previous) {
-    $evidence = Join-Path (Join-Path $repoRoot 'flight-evidence') $runId
-    $local = Join-Path (Join-Path $PSScriptRoot 'logs') ('{0}_{1}' -f (Get-Date -Format 'yyyy-MM-dd_HH-mm-ss'), $runId)
-    New-Item -ItemType Directory -Force -Path $local | Out-Null
-    if (Test-Path $evidence) { Copy-Item (Join-Path $evidence '*') $local -Recurse -Force }
-    $runtime = Join-Path (Join-Path $repoRoot '.runtime\runs') $runId
-    if (Test-Path $runtime) { Copy-Item $runtime (Join-Path $local 'runtime') -Recurse -Force }
-    Copy-Item $launcher (Join-Path $local 'launcher-transcript.log') -Force
+    $evidence = Get-LatestEvidenceDirectory
+    if (-not $evidence) { throw "Canonical evidence directory не знайдено для run $runId." }
     $pdf = Join-Path $evidence ('report\' + [string]$profileConfig.report.pdf_filename)
     Write-Host "[VINS-POSE-GRAPH] Evidence: $evidence"
-    Write-Host "[VINS-POSE-GRAPH] Локальні журнали тесту: $local"
+    Write-Host "[VINS-POSE-GRAPH] Журнал launcher: $launcher"
     if ((Test-Path -LiteralPath $pdf) -and -not $NoOpenReport -and $visualMode -eq 'visual' -and $profileConfig.report.open_pdf_after_test) { Start-Process $pdf }
 }
 exit $exitCode

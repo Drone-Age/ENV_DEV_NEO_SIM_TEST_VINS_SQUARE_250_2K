@@ -1,5 +1,17 @@
 # Історія змін
 
+## 1.0.2 — канонічне володіння evidence
+
+- Route qualification автоматично зберігає evidence у `logs/` того тестового
+  репозиторію, якому належить активний profile.
+- Launcher читає фактичний канонічний каталог через `latest_run_dir` і більше
+  не створює порожню копію у сторонньому `flight-evidence`.
+- Resume і консолідація кампанії тепер бачать завершені польоти без ручного
+  перенесення даних.
+
+Issue: https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/1
+Координація: https://github.com/Drone-Age/ENV_DEV_NEO_SIM1/issues/12
+
 ## 1.0.1 — гарантія фактичної дистанції
 
 - Після двох повних кіл додано замкнений 20+20 м distance-assurance tail.

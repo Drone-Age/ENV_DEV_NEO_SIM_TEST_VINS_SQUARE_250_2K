@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "configurations" / "pose-graph-campaign"
 TEST_ID = "VINS-POSE-GRAPH-SQUARE-250-2K-QUALIFICATION"
-TEST_VERSION = "1.0.1"
+TEST_VERSION = "1.0.2"
 TEST_REPOSITORY = "Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K"
 ARDUPILOT_REQUIREMENT = {
     "product": "ArduCopter",
