@@ -211,7 +211,7 @@ if ($bootstrapTrajectory -eq 'vertical') {
 if ($NavigationMode -eq 'gps_denied') {
     Write-Host '[VINS-POSE-GRAPH] Після initialization gate VINS ExternalNav стає єдиним джерелом XY/velocity/yaw для FCU Source Set 2.'
 } else {
-    Write-Host '[VINS-POSE-GRAPH] Після обов’язкового initialization gate VINS використовується лише для вимірювання.'
+    Write-Host "[VINS-POSE-GRAPH] Після обов’язкового initialization gate VINS використовується лише для вимірювання."
 }
 Write-Host '[VINS-POSE-GRAPH] Architecture contract checks навмисно не входять до цього тесту.'
 if ($Rosbag) {
