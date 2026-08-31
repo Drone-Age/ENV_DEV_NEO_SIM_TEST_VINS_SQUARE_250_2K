@@ -10,9 +10,12 @@
       "source_commit": "1511f27194f1dcc3728270883047bdf022b3fd53"
     },
     "vio_stack": {
-      "version": "1.2.4",
-      "source_commit": "6f822dd6f637c3ca3ce73bcc6b6973b28feebbce",
-      "vision_bridge_version": "0.3.1"
+      "version": "0.9.0",
+      "source_commit": "ddaf4268199811f6350eb6226b86510936e10139"
+    },
+    "vision_bridge": {
+      "version": "0.3.1",
+      "source_commit": "6f822dd6f637c3ca3ce73bcc6b6973b28feebbce"
     }
   },
   "configuration_id": "vb031-gps-denied-loop-and-map-reuse-150m-s6604",

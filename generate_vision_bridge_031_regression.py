@@ -32,9 +32,12 @@ def write_profile(source: str, configuration_id: str, seed: int) -> str:
         "coordination_issue": COORDINATION_ISSUE,
     }
     profile["runtime_requirements"]["vio_stack"] = {
-        "version": "1.2.4",
+        "version": "0.9.0",
+        "source_commit": "ddaf4268199811f6350eb6226b86510936e10139",
+    }
+    profile["runtime_requirements"]["vision_bridge"] = {
+        "version": "0.3.1",
         "source_commit": "6f822dd6f637c3ca3ce73bcc6b6973b28feebbce",
-        "vision_bridge_version": "0.3.1",
     }
     path = OUTPUT / f"{configuration_id}.json"
     path.write_text(json.dumps(profile, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -57,9 +60,12 @@ def suite(suite_id: str, display_name: str, runs: list[dict], *, continue_on_fai
                 "source_commit": "1511f27194f1dcc3728270883047bdf022b3fd53",
             },
             "vio_stack": {
-                "version": "1.2.4",
+                "version": "0.9.0",
+                "source_commit": "ddaf4268199811f6350eb6226b86510936e10139",
+            },
+            "vision_bridge": {
+                "version": "0.3.1",
                 "source_commit": "6f822dd6f637c3ca3ce73bcc6b6973b28feebbce",
-                "vision_bridge_version": "0.3.1",
             },
         },
         "consolidator": "consolidate_gps_denied_campaign.py",
