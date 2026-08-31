@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "suite_id": "vision-bridge-0.3.1-gps-denied-combined",
+  "display_name": "Контрольний GPS-denied Loop Closure + Map Reuse для vision_bridge 0.3.1",
+  "continue_on_fail": false,
+  "navigation_mode": "gps_denied",
+  "issue": "https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/3",
+  "coordination_issue": "https://github.com/Drone-Age/ENV_DEV_NEO_SIM1/issues/15",
+  "runtime_requirements": {
+    "ardupilot": {
+      "product": "ArduCopter",
+      "version": "4.7.0",
+      "source_commit": "1511f27194f1dcc3728270883047bdf022b3fd53"
+    },
+    "vio_stack": {
+      "version": "1.2.4",
+      "source_commit": "6f822dd6f637c3ca3ce73bcc6b6973b28feebbce",
+      "vision_bridge_version": "0.3.1"
+    }
+  },
+  "consolidator": "consolidate_gps_denied_campaign.py",
+  "runs": [
+    {
+      "run_number": 1,
+      "configuration_id": "vb031-gps-denied-loop-and-map-reuse-150m-s6604",
+      "profile": "../configurations/vision-bridge-0.3.1-regression/vb031-gps-denied-loop-and-map-reuse-150m-s6604.json",
+      "mode": "loop_and_map_reuse",
+      "target_altitude_m": 150,
+      "seed": 6604
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "suite_id": "vision-bridge-0.3.1-gps-denied-map-reuse-only-3",
+  "display_name": "Три GPS-denied польоти Map Reuse Only для vision_bridge 0.3.1",
+  "continue_on_fail": true,
+  "navigation_mode": "gps_denied",
+  "issue": "https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/3",
+  "coordination_issue": "https://github.com/Drone-Age/ENV_DEV_NEO_SIM1/issues/15",
+  "runtime_requirements": {
+    "ardupilot": {
+      "product": "ArduCopter",
+      "version": "4.7.0",
+      "source_commit": "1511f27194f1dcc3728270883047bdf022b3fd53"
+    },
+    "vio_stack": {
+      "version": "1.2.4",
+      "source_commit": "6f822dd6f637c3ca3ce73bcc6b6973b28feebbce",
+      "vision_bridge_version": "0.3.1"
+    }
+  },
+  "consolidator": "consolidate_gps_denied_campaign.py",
+  "runs": [
+    {
+      "run_number": 1,
+      "configuration_id": "vb031-gps-denied-map-reuse-only-150m-s6601",
+      "profile": "../configurations/vision-bridge-0.3.1-regression/vb031-gps-denied-map-reuse-only-150m-s6601.json",
+      "mode": "map_reuse_only",
+      "target_altitude_m": 150,
+      "seed": 6601
+    },
+    {
+      "run_number": 2,
+      "configuration_id": "vb031-gps-denied-map-reuse-only-150m-s6602",
+      "profile": "../configurations/vision-bridge-0.3.1-regression/vb031-gps-denied-map-reuse-only-150m-s6602.json",
+      "mode": "map_reuse_only",
+      "target_altitude_m": 150,
+      "seed": 6602
+    },
+    {
+      "run_number": 3,
+      "configuration_id": "vb031-gps-denied-map-reuse-only-150m-s6603",
+      "profile": "../configurations/vision-bridge-0.3.1-regression/vb031-gps-denied-map-reuse-only-150m-s6603.json",
+      "mode": "map_reuse_only",
+      "target_altitude_m": 150,
+      "seed": 6603
+    }
+  ]
+}
