@@ -135,10 +135,48 @@ def create_pdf(report: dict, output: Path) -> None:
     from reportlab.lib.pagesizes import A4, landscape
     from reportlab.lib.styles import getSampleStyleSheet
     from reportlab.lib.units import mm
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.ttfonts import TTFont
     from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
+
+    font_candidates = (
+        Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+        Path("C:/Windows/Fonts/arial.ttf"),
+    )
+    bold_candidates = (
+        Path("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"),
+        Path("C:/Windows/Fonts/arialbd.ttf"),
+    )
+    font_path = next((path for path in font_candidates if path.is_file()), None)
+    bold_path = next((path for path in bold_candidates if path.is_file()), None)
+    if font_path is None or bold_path is None:
+        raise RuntimeError("не знайдено шрифт із підтримкою української мови")
+    pdfmetrics.registerFont(TTFont("VinsReport", str(font_path)))
+    pdfmetrics.registerFont(TTFont("VinsReport-Bold", str(bold_path)))
 
     output.parent.mkdir(parents=True, exist_ok=True)
     styles = getSampleStyleSheet()
+    styles["Title"].fontName = "VinsReport-Bold"
+    styles["BodyText"].fontName = "VinsReport"
+    cell_style = styles["BodyText"].clone("GpsDeniedTableCell")
+    cell_style.fontName = "VinsReport"
+    cell_style.fontSize = 6.2
+    cell_style.leading = 7.2
+    header_style = cell_style.clone("GpsDeniedTableHeader")
+    header_style.fontName = "VinsReport-Bold"
+    header_style.textColor = colors.white
+    header_style.alignment = 1
+
+    def wrapped(value, header: bool = False):
+        text = str(value if value is not None else "")
+        text = text.replace("_", "_<wbr/>").replace("-", "-<wbr/>")
+        return Paragraph(text, header_style if header else cell_style)
+
+    def wrapped_rows(rows):
+        return [
+            [wrapped(value, row_index == 0) for value in row]
+            for row_index, row in enumerate(rows)
+        ]
     story = [
         Paragraph("GPS-denied кваліфікація VINS Pose Graph", styles["Title"]),
         Paragraph(
@@ -163,13 +201,17 @@ def create_pdf(report: dict, output: Path) -> None:
             nav.get("route_source_set_2_fraction", "—"), nav.get("route_gnss_fusion_sample_count", "—"),
         ])
     for rows, widths in ((verdict_rows, [52*mm, 28*mm, 28*mm, 40*mm, 48*mm]), (flights, [10*mm, 92*mm, 42*mm, 20*mm, 25*mm, 27*mm, 27*mm])):
-        table = Table(rows, colWidths=widths, repeatRows=1)
+        table = Table(wrapped_rows(rows), colWidths=widths, repeatRows=1)
         table.setStyle(TableStyle([
             ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#17365D")),
-            ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+            ("FONTNAME", (0, 0), (-1, -1), "VinsReport"),
+            ("FONTNAME", (0, 0), (-1, 0), "VinsReport-Bold"),
             ("GRID", (0, 0), (-1, -1), 0.25, colors.grey),
-            ("FONTSIZE", (0, 0), (-1, -1), 7),
             ("VALIGN", (0, 0), (-1, -1), "TOP"),
+            ("LEFTPADDING", (0, 0), (-1, -1), 3),
+            ("RIGHTPADDING", (0, 0), (-1, -1), 3),
+            ("TOPPADDING", (0, 0), (-1, -1), 3),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
         ]))
         story.extend([table, Spacer(1, 5 * mm)])
     SimpleDocTemplate(
