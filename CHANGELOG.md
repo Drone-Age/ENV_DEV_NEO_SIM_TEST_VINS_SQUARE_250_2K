@@ -1,5 +1,23 @@
 # Історія змін
 
+## 1.1.0 — GPS-denied кваліфікація на VINS ExternalNav
+
+- Додано окрему кампанію з 15 польотів на висоті 150 м: по три seed для
+  `disabled`, `loop`, `map_build`, `map_reuse_only` і
+  `loop_and_map_reuse`.
+- Політ виконується на ArduPilot Source Set 2 лише за VINS ExternalNav;
+  GNSS fusion і повернення до Source Set 1 заборонені протягом маршруту.
+- Додано окремі JSON/PDF-звіти, часову шкалу джерел навігації, перевірку
+  ExternalNav health та незалежний післяпольотний аудит false matches за
+  незмінними подіями польоту.
+- Збережено всі 15 результатів: одна валідна побудова карти та 14 невдалих
+  або перерваних запусків без вибіркової заміни post-ARM результатів.
+- Rosbag/MCAP залишається вимкненим; усі запуски кампанії виконано без
+  створення `.bag`, `.db3` або `.mcap`.
+
+Issue: https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/2
+Координація: https://github.com/Drone-Age/ENV_DEV_NEO_SIM1/issues/13
+
 ## 1.0.9 — профільований поріг для раннього Loop Closure
 
 - Додано явний параметр профілю `min_fundamental_inlier_ratio=0.30`, який
