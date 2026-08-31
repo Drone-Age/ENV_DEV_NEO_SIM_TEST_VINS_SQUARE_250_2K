@@ -123,3 +123,9 @@ Issue: https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issu
 
 Issue: https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/1
 Координація: https://github.com/Drone-Age/ENV_DEV_NEO_SIM1/issues/12
+# 1.1.0
+
+- Додано окрему GPS-denied підкампанію з 15 польотів на висоті 150 м у п’яти режимах Pose Graph.
+- Додано fail-closed контракт EKF Source Set 2 із VINS ExternalNav та доказову заборону GNSS fusion/fallback на заліковому маршруті.
+- Додано окремі JSON/PDF, що не змішуються із замороженою 42-польотною кампанією.
+- Issues: https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/2 та https://github.com/Drone-Age/ENV_DEV_NEO_SIM1/issues/13.

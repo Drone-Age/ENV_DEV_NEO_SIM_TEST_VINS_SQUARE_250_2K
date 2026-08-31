@@ -11,3 +11,5 @@ Profiles, test contract, `VERSION`, CHANGELOG і release evidence змінюют
 разом. SIM1 використовує лише точний released commit через submodule.
 
 Issue: https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/1
+
+GPS-denied зміни 1.1.0: https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/2

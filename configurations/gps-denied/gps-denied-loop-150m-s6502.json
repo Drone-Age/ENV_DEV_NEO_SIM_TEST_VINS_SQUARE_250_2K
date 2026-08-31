@@ -10,9 +10,9 @@
       "source_commit": "1511f27194f1dcc3728270883047bdf022b3fd53"
     }
   },
-  "configuration_id": "pg-smoke-1-disabled",
-  "vins_configuration_file": "vins-configurations/vins-neo-imx477-nominal.json",
-  "description": "Інженерний smoke режиму disabled",
+  "configuration_id": "gps-denied-loop-150m-s6502",
+  "vins_configuration_file": "../../vins-configurations/vins-neo-imx477-nominal.json",
+  "description": "GPS-denied підкампанія, режим loop, висота 150 м, seed 6502",
   "execution": {
     "visual_ui": true,
     "headless": false,
@@ -24,24 +24,37 @@
     "signed_mission_upload": "direct_mavros_then_double_pull_verify",
     "mission_planner_role": "observer_and_optional_manual_loader",
     "architecture_contract_checks": false,
-    "bootstrap_only": false
+    "bootstrap_only": false,
+    "gps_denied": true
   },
   "navigation": {
-    "flight_source_set": 1,
-    "ekf_switch_allowed": false,
-    "control_source": "GNSS",
-    "vins_role": "measurement_only",
-    "minimum_gps_status": 0
+    "flight_source_set": 2,
+    "ekf_switch_allowed": true,
+    "control_source": "VINS_ExternalNav",
+    "vins_role": "flight_control_external_nav",
+    "minimum_gps_status": 0,
+    "gnss_fusion_during_route_allowed": false,
+    "source_set_fallback_after_route_start_allowed": false,
+    "source_set_confirmation_timeout_s": 30.0,
+    "source_set_2_contract": {
+      "position_xy": "ExternalNav",
+      "velocity_xy": "ExternalNav",
+      "position_z": "Barometer",
+      "velocity_z": "None",
+      "yaw": "ExternalNav"
+    }
   },
   "pose_graph": {
-    "mode": "disabled",
+    "mode": "loop",
     "map_artifact": "",
-    "allowed_match_sources": [],
+    "allowed_match_sources": [
+      "current_session"
+    ],
     "source_altitude_m": null,
     "target_altitude_m": 150.0,
     "false_match_truth_distance_m": 20.0,
-    "candidate_exclusion_keyframes": 50,
-    "candidate_selection": "oldest",
+    "candidate_exclusion_keyframes": 400,
+    "candidate_selection": "best_score",
     "min_fundamental_inlier_ratio": 0.3,
     "loaded_map_match_deadline_progress_m": 100.0,
     "current_session_match_start_progress_m": 1000.0,
@@ -139,8 +152,8 @@
     "bootstrap_only_landing_timeout_s": 180.0
   },
   "route": {
-    "mission_file": "mission/square-250m-2km-150m.waypoints",
-    "route_file": "mission/square-250m-2km-150m-route.json",
+    "mission_file": "../../mission/square-250m-2km-150m.waypoints",
+    "route_file": "../../mission/square-250m-2km-150m-route.json",
     "altitude_m": 150,
     "loops": 2,
     "samples_per_loop": 4,
@@ -161,7 +174,7 @@
   "wind": {
     "enabled": true,
     "profile": "route",
-    "seed": 4901,
+    "seed": 6502,
     "minimum_mps": 3.0,
     "mean_mps": 5.0,
     "maximum_mps": 7.0,
@@ -214,12 +227,6 @@
     "include_route_charts": true,
     "open_pdf_after_test": true
   },
-  "engineering_smoke_expectations": {
-    "require_match": false,
-    "required_match_source": null,
-    "require_corrected_change_after_match": false,
-    "require_identity_when_disabled": true
-  },
   "execution_backend": "simulation",
   "backend_contracts": {
     "simulation": {
@@ -237,5 +244,9 @@
       "requires_reference_metadata": true,
       "arm_policy": "fail_closed"
     }
+  },
+  "governance": {
+    "issue": "https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/2",
+    "coordination_issue": "https://github.com/Drone-Age/ENV_DEV_NEO_SIM1/issues/13"
   }
 }

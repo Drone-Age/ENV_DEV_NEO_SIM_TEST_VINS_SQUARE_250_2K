@@ -10,6 +10,8 @@ endpoint у першій вершині та не входить у lap/side/cor
 
 Issue: https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/1
 
+GPS-denied підкампанія: https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/2
+
 ## Межа відповідальності
 
 - спільне ядро володіє маршрутами, profiles, suites, verdicts і JSON/PDF;
@@ -43,6 +45,30 @@ Fail-closed dry run майбутнього реального backend потре
 Офіційна кампанія містить 42 польоти: 10 Loop Closure, 2 Map Build, 18 Map
 Reuse Only та 12 Loop Closure + Map Reuse. Smoke містить п'ять окремих
 інженерних запусків і не входить до офіційної статистики.
+
+42-польотна кампанія заморожена на профілях версії 1.0.9 і керуванні GNSS
+Source Set 1. Її profiles, evidence та звіти не перегенеровуються версією 1.1.0.
+
+## GPS-denied підкампанія
+
+Окрема suite містить 15 польотів на висоті 150 м: по три фіксовані seeds для
+`disabled`, `loop`, `map_build`, `map_reuse_only` і
+`loop_and_map_reuse`. До офіційної підкампанії виконується один engineering
+smoke. Після bootstrap controller переводить ArduCopter на EKF Source Set 2 з
+VINS ExternalNav і fail-closed перевіряє health, rate, timestamps, covariance,
+FCU acknowledgement та фактичний source timeline. Будь-який Source Set 1 або
+GNSS fusion після початку маршруту анулює політ.
+
+```powershell
+python .\generate_gps_denied_campaign.py
+.\run-test.ps1 -Suite vins-square-250-2k-gps-denied-smoke -NavigationMode gps_denied -Backend simulation -Headless
+.\run-test.ps1 -Suite vins-square-250-2k-gps-denied-15 -NavigationMode gps_denied -Backend simulation -Headless -Resume
+```
+
+Reuse-профілі читають незмінну карту `square-2km-qualification-map-150m`.
+Кожний `map_build` пише окремий artifact за seed, тому immutable map не
+перезаписується. GPS-denied JSON/PDF мають окремі імена та не змішуються зі
+звітом основних 42 польотів.
 
 ## Rosbag
 

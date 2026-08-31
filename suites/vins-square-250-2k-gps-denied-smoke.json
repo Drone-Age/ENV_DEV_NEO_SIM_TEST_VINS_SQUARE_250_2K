@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "suite_id": "vins-square-250-2k-gps-denied-smoke",
+  "display_name": "Інженерний GPS-denied smoke",
+  "continue_on_fail": false,
+  "navigation_mode": "gps_denied",
+  "issue": "https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/2",
+  "runtime_requirements": {
+    "ardupilot": {
+      "product": "ArduCopter",
+      "version": "4.7.0",
+      "source_commit": "1511f27194f1dcc3728270883047bdf022b3fd53"
+    }
+  },
+  "consolidator": "consolidate_gps_denied_campaign.py",
+  "runs": [
+    {
+      "run_number": 1,
+      "configuration_id": "gps-denied-smoke-loop_and_map_reuse-s6499",
+      "profile": "../configurations/gps-denied/gps-denied-smoke-loop_and_map_reuse-s6499.json",
+      "mode": "loop_and_map_reuse",
+      "target_altitude_m": 150,
+      "seed": 6499
+    }
+  ]
+}

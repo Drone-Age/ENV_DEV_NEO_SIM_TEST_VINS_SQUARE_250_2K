@@ -12,6 +12,8 @@ param(
     [switch]$RuntimeVerified,
     [switch]$NoOpenReport,
     [switch]$PrintOnly,
+    [ValidateSet('gnss', 'gps_denied')]
+    [string]$NavigationMode = 'gnss',
     [ValidateSet('simulation', 'real_vehicle')]
     [string]$Backend = 'simulation',
     [string]$SiteProfile = '',
@@ -122,7 +124,7 @@ if ($Suite) {
                 continue
             }
         }
-        & $PSCommandPath -ProfilePath $itemProfile -Headless:$Headless -VisualUi:$VisualUi -Rosbag:$Rosbag -NoOpenReport -PrintOnly:$PrintOnly -Backend $Backend -SiteProfile $SiteProfile -ReferenceFile $ReferenceFile -Distro $suiteDistro -RuntimeVerified:(-not $PrintOnly -and $Backend -eq 'simulation')
+        & $PSCommandPath -ProfilePath $itemProfile -Headless:$Headless -VisualUi:$VisualUi -Rosbag:$Rosbag -NoOpenReport -PrintOnly:$PrintOnly -NavigationMode $NavigationMode -Backend $Backend -SiteProfile $SiteProfile -ReferenceFile $ReferenceFile -Distro $suiteDistro -RuntimeVerified:(-not $PrintOnly -and $Backend -eq 'simulation')
         if ($LASTEXITCODE -ne 0) {
             $suiteExitCode = $LASTEXITCODE
             if (-not $suiteContract.continue_on_fail) { break }
@@ -159,7 +161,23 @@ if ($LASTEXITCODE -ne 0) { throw "Backend contract не пройдено для 
 $version = (Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'VERSION')).Trim()
 $contract = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'test-contract.json') | ConvertFrom-Json
 if ($profileConfig.test_version -ne $version -or $contract.version -ne $version) { throw 'Версії VERSION/profile/contract не збігаються.' }
-if ($profileConfig.navigation.flight_source_set -ne 1 -or $profileConfig.navigation.ekf_switch_allowed -ne $false) { throw 'Тест має залишатися на GNSS Source Set 1 без перемикання EKF.' }
+$expectedSourceSet = if ($NavigationMode -eq 'gps_denied') { 2 } else { 1 }
+if ([int]$profileConfig.navigation.flight_source_set -ne $expectedSourceSet) {
+    throw "NavigationMode $NavigationMode не відповідає підписаному flight_source_set $($profileConfig.navigation.flight_source_set)."
+}
+if ($NavigationMode -eq 'gnss') {
+    if ($profileConfig.navigation.ekf_switch_allowed -ne $false -or $profileConfig.navigation.control_source -ne 'GNSS') {
+        throw 'GNSS-тест має залишатися на Source Set 1 без перемикання EKF.'
+    }
+} else {
+    if (
+        $profileConfig.navigation.ekf_switch_allowed -ne $true -or
+        $profileConfig.navigation.control_source -ne 'VINS_ExternalNav' -or
+        $profileConfig.navigation.vins_role -ne 'flight_control_external_nav' -or
+        $profileConfig.navigation.gnss_fusion_during_route_allowed -ne $false -or
+        $profileConfig.navigation.source_set_fallback_after_route_start_allowed -ne $false
+    ) { throw 'GPS-denied profile не містить повний fail-closed ExternalNav контракт.' }
+}
 if ($profileConfig.execution.architecture_contract_checks -ne $false) { throw 'Architecture checks не входять до цього on-demand тесту.' }
 $mission = Join-Path (Split-Path -Parent $resolvedProfilePath) ([string]$profileConfig.route.mission_file)
 if (-not (Test-Path -LiteralPath $mission -PathType Leaf)) { throw "Файл місії не знайдено: $mission" }
@@ -168,7 +186,11 @@ $relativeProfile = $resolvedProfilePath.Substring($repoRoot.TrimEnd('\').Length 
 Write-Host "[VINS-SQUARE-2K] Тест: $($profileConfig.test_id) v$version"
 Write-Host "[VINS-SQUARE-2K] Конфігурація: $($profileConfig.configuration_id)"
 Write-Host "[VINS-SQUARE-2K] Backend: $Backend"
-Write-Host '[VINS-POSE-GRAPH] Керування польотом: лише GNSS / EKF Source Set 1, без перемикання EKF.'
+if ($NavigationMode -eq 'gps_denied') {
+    Write-Host '[VINS-POSE-GRAPH] Керування маршрутом: VINS ExternalNav / EKF Source Set 2; GNSS fusion і fallback заборонені.'
+} else {
+    Write-Host '[VINS-POSE-GRAPH] Керування польотом: лише GNSS / EKF Source Set 1, без перемикання EKF.'
+}
 Write-Host '[VINS-POSE-GRAPH] Контролер завантажує підписану місію безпосередньо в ArduPilot і двічі її перевіряє.'
 Write-Host '[VINS-POSE-GRAPH] Mission Planner використовується лише як спостерігач.'
 if ($profileConfig.execution.bootstrap_only -eq $true) {
@@ -186,7 +208,11 @@ if ($bootstrapTrajectory -eq 'vertical') {
 } else {
     Write-Host "[VINS-POSE-GRAPH] Bootstrap VINS: 10 -> 20 -> 10 м на діагональних ділянках $($profileConfig.bootstrap.bootstrap_path_angle_deg)°."
 }
-Write-Host "[VINS-POSE-GRAPH] Після обов’язкового initialization gate VINS використовується лише для вимірювання."
+if ($NavigationMode -eq 'gps_denied') {
+    Write-Host '[VINS-POSE-GRAPH] Після initialization gate VINS ExternalNav стає єдиним джерелом XY/velocity/yaw для FCU Source Set 2.'
+} else {
+    Write-Host '[VINS-POSE-GRAPH] Після обов’язкового initialization gate VINS використовується лише для вимірювання.'
+}
 Write-Host '[VINS-POSE-GRAPH] Architecture contract checks навмисно не входять до цього тесту.'
 if ($Rosbag) {
     Write-Host '[VINS-POSE-GRAPH] Rosbag: прямо дозволено користувачем для цього запуску.'

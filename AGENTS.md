@@ -14,3 +14,5 @@
 
 Нормативна зміна: `Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K#1`.
 Координація SIM1: `Drone-Age/ENV_DEV_NEO_SIM1#12`.
+GPS-denied підкампанія: `Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K#2`.
+GPS-denied координація SIM1: `Drone-Age/ENV_DEV_NEO_SIM1#13`.

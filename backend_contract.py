@@ -43,6 +43,40 @@ def validate_profile_backend(profile: dict, backend: str) -> dict:
     return contract
 
 
+def validate_navigation_contract(profile: dict) -> dict:
+    navigation = profile.get("navigation") or {}
+    source_set = int(navigation.get("flight_source_set", 0))
+    if source_set == 1:
+        if navigation.get("control_source") != "GNSS" or navigation.get("ekf_switch_allowed") is not False:
+            raise ContractError("GNSS profile повинен залишатися на Source Set 1")
+        return {"navigation_mode": "gnss", "flight_source_set": 1}
+    if source_set != 2:
+        raise ContractError("Підтримуються лише EKF Source Set 1 або 2")
+    required = {
+        "control_source": "VINS_ExternalNav",
+        "vins_role": "flight_control_external_nav",
+        "ekf_switch_allowed": True,
+        "gnss_fusion_during_route_allowed": False,
+        "source_set_fallback_after_route_start_allowed": False,
+    }
+    for key, expected in required.items():
+        if navigation.get(key) != expected:
+            raise ContractError(f"GPS-denied navigation.{key} має дорівнювати {expected!r}")
+    source_contract = navigation.get("source_set_2_contract") or {}
+    expected_sources = {
+        "position_xy": "ExternalNav", "velocity_xy": "ExternalNav",
+        "position_z": "Barometer", "velocity_z": "None", "yaw": "ExternalNav",
+    }
+    if source_contract != expected_sources:
+        raise ContractError("GPS-denied Source Set 2 не відповідає затвердженому ExternalNav контракту")
+    return {
+        "navigation_mode": "gps_denied",
+        "flight_source_set": 2,
+        "gnss_fusion_allowed": False,
+        "fallback_after_route_start_allowed": False,
+    }
+
+
 def validate_reference(reference: dict, minimum_coverage: float) -> None:
     if reference.get("schema") != 1:
         raise ContractError("Непідтримувана schema RTK/PPK reference")
@@ -121,6 +155,7 @@ def main() -> int:
         profile = load_json(args.profile, "Profile")
         result = {"passed": True, "backend": args.backend, "profile_sha256": sha256(args.profile)}
         result.update(validate_profile_backend(profile, args.backend))
+        result.update(validate_navigation_contract(profile))
         if args.backend == "real_vehicle":
             if args.site_profile is None:
                 raise ContractError("real_vehicle потребує -SiteProfile")

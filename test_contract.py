@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from backend_contract import ContractError, validate_profile_backend, validate_real_vehicle
+from backend_contract import ContractError, validate_navigation_contract, validate_profile_backend, validate_real_vehicle
 from consolidate_pose_graph_campaign import build as build_campaign
 from consolidate_pose_graph_smoke import build as build_smoke
 from generate_mission import generate_square, path_distance, square_points
@@ -70,7 +70,7 @@ def test_contract_identity_and_governance():
     assert contract["backends"] == ["simulation", "real_vehicle"]
     assert contract["issue"] == ISSUE
     assert contract["coordination_issue"].endswith("/issues/12")
-    assert (ROOT / "VERSION").read_text().strip() == "1.0.9"
+    assert (ROOT / "VERSION").read_text().strip() == "1.1.0"
 
 
 def test_launcher_uses_canonical_latest_run_directory():
@@ -239,6 +239,50 @@ def test_launcher_exposes_backends_and_keeps_rosbag_explicit():
     assert "if ($Rosbag)" in launcher
     assert "profileConfig" not in launcher.split("if ($Rosbag)", 1)[0][-100:]
     assert "$args += '-Rosbag'" in launcher
+
+
+def test_gps_denied_campaign_has_15_fixed_runs_and_one_separate_smoke():
+    suite = load("suites/vins-square-250-2k-gps-denied-15.json")
+    smoke = load("suites/vins-square-250-2k-gps-denied-smoke.json")
+    assert suite["official_flight_count"] == 15
+    assert suite["navigation_mode"] == "gps_denied"
+    assert len(suite["runs"]) == 15
+    assert [run["run_number"] for run in suite["runs"]] == list(range(1, 16))
+    assert len(smoke["runs"]) == 1
+    assert smoke["runs"][0]["configuration_id"].startswith("gps-denied-smoke-")
+    assert {run["mode"] for run in suite["runs"]} == {
+        "disabled", "loop", "map_build", "map_reuse_only", "loop_and_map_reuse"
+    }
+    assert all(sum(run["mode"] == mode for run in suite["runs"]) == 3 for mode in {
+        "disabled", "loop", "map_build", "map_reuse_only", "loop_and_map_reuse"
+    })
+
+
+def test_all_gps_denied_profiles_are_fail_closed_and_reuse_frozen_map():
+    profiles = [
+        json.loads(path.read_text(encoding="utf-8"))
+        for path in sorted((ROOT / "configurations" / "gps-denied").glob("*.json"))
+    ]
+    assert len(profiles) == 16
+    for profile in profiles:
+        result = validate_navigation_contract(profile)
+        assert result["navigation_mode"] == "gps_denied"
+        assert result["flight_source_set"] == 2
+        assert result["gnss_fusion_allowed"] is False
+        assert profile["route"]["required_truth_distance_m"] == 2000
+        assert profile["route"]["altitude_m"] == 150
+        assert profile["execution"]["gps_denied"] is True
+        mode = profile["pose_graph"]["mode"]
+        if mode in {"map_reuse_only", "loop_and_map_reuse"}:
+            assert profile["pose_graph"]["map_artifact"] == "square-2km-qualification-map-150m"
+
+
+def test_launcher_requires_explicit_gps_denied_navigation_mode():
+    launcher = (ROOT / "run-test.ps1").read_text(encoding="utf-8")
+    assert "[ValidateSet('gnss', 'gps_denied')]" in launcher
+    assert "[string]$NavigationMode = 'gnss'" in launcher
+    assert "gnss_fusion_during_route_allowed" in launcher
+    assert "source_set_fallback_after_route_start_allowed" in launcher
 
 
 def test_empty_evidence_reports_are_honest(tmp_path):

@@ -1,0 +1,141 @@
+{
+  "schema": 1,
+  "suite_id": "vins-square-250-2k-gps-denied-15",
+  "display_name": "GPS-denied кваліфікація VINS Pose Graph на квадраті 250 м / 2 км",
+  "official_flight_count": 15,
+  "continue_on_fail": true,
+  "retry_policy": "startup_retry_before_arm_only",
+  "navigation_mode": "gps_denied",
+  "issue": "https://github.com/Drone-Age/ENV_DEV_NEO_SIM_TEST_VINS_SQUARE_250_2K/issues/2",
+  "coordination_issue": "https://github.com/Drone-Age/ENV_DEV_NEO_SIM1/issues/13",
+  "runtime_requirements": {
+    "ardupilot": {
+      "product": "ArduCopter",
+      "version": "4.7.0",
+      "source_commit": "1511f27194f1dcc3728270883047bdf022b3fd53"
+    }
+  },
+  "consolidator": "consolidate_gps_denied_campaign.py",
+  "runs": [
+    {
+      "run_number": 1,
+      "configuration_id": "gps-denied-disabled-150m-s6501",
+      "profile": "../configurations/gps-denied/gps-denied-disabled-150m-s6501.json",
+      "mode": "disabled",
+      "target_altitude_m": 150,
+      "seed": 6501
+    },
+    {
+      "run_number": 2,
+      "configuration_id": "gps-denied-disabled-150m-s6502",
+      "profile": "../configurations/gps-denied/gps-denied-disabled-150m-s6502.json",
+      "mode": "disabled",
+      "target_altitude_m": 150,
+      "seed": 6502
+    },
+    {
+      "run_number": 3,
+      "configuration_id": "gps-denied-disabled-150m-s6503",
+      "profile": "../configurations/gps-denied/gps-denied-disabled-150m-s6503.json",
+      "mode": "disabled",
+      "target_altitude_m": 150,
+      "seed": 6503
+    },
+    {
+      "run_number": 4,
+      "configuration_id": "gps-denied-loop-150m-s6501",
+      "profile": "../configurations/gps-denied/gps-denied-loop-150m-s6501.json",
+      "mode": "loop",
+      "target_altitude_m": 150,
+      "seed": 6501
+    },
+    {
+      "run_number": 5,
+      "configuration_id": "gps-denied-loop-150m-s6502",
+      "profile": "../configurations/gps-denied/gps-denied-loop-150m-s6502.json",
+      "mode": "loop",
+      "target_altitude_m": 150,
+      "seed": 6502
+    },
+    {
+      "run_number": 6,
+      "configuration_id": "gps-denied-loop-150m-s6503",
+      "profile": "../configurations/gps-denied/gps-denied-loop-150m-s6503.json",
+      "mode": "loop",
+      "target_altitude_m": 150,
+      "seed": 6503
+    },
+    {
+      "run_number": 7,
+      "configuration_id": "gps-denied-map_build-150m-s6501",
+      "profile": "../configurations/gps-denied/gps-denied-map_build-150m-s6501.json",
+      "mode": "map_build",
+      "target_altitude_m": 150,
+      "seed": 6501
+    },
+    {
+      "run_number": 8,
+      "configuration_id": "gps-denied-map_build-150m-s6502",
+      "profile": "../configurations/gps-denied/gps-denied-map_build-150m-s6502.json",
+      "mode": "map_build",
+      "target_altitude_m": 150,
+      "seed": 6502
+    },
+    {
+      "run_number": 9,
+      "configuration_id": "gps-denied-map_build-150m-s6503",
+      "profile": "../configurations/gps-denied/gps-denied-map_build-150m-s6503.json",
+      "mode": "map_build",
+      "target_altitude_m": 150,
+      "seed": 6503
+    },
+    {
+      "run_number": 10,
+      "configuration_id": "gps-denied-map_reuse_only-150m-s6501",
+      "profile": "../configurations/gps-denied/gps-denied-map_reuse_only-150m-s6501.json",
+      "mode": "map_reuse_only",
+      "target_altitude_m": 150,
+      "seed": 6501
+    },
+    {
+      "run_number": 11,
+      "configuration_id": "gps-denied-map_reuse_only-150m-s6502",
+      "profile": "../configurations/gps-denied/gps-denied-map_reuse_only-150m-s6502.json",
+      "mode": "map_reuse_only",
+      "target_altitude_m": 150,
+      "seed": 6502
+    },
+    {
+      "run_number": 12,
+      "configuration_id": "gps-denied-map_reuse_only-150m-s6503",
+      "profile": "../configurations/gps-denied/gps-denied-map_reuse_only-150m-s6503.json",
+      "mode": "map_reuse_only",
+      "target_altitude_m": 150,
+      "seed": 6503
+    },
+    {
+      "run_number": 13,
+      "configuration_id": "gps-denied-loop_and_map_reuse-150m-s6501",
+      "profile": "../configurations/gps-denied/gps-denied-loop_and_map_reuse-150m-s6501.json",
+      "mode": "loop_and_map_reuse",
+      "target_altitude_m": 150,
+      "seed": 6501
+    },
+    {
+      "run_number": 14,
+      "configuration_id": "gps-denied-loop_and_map_reuse-150m-s6502",
+      "profile": "../configurations/gps-denied/gps-denied-loop_and_map_reuse-150m-s6502.json",
+      "mode": "loop_and_map_reuse",
+      "target_altitude_m": 150,
+      "seed": 6502
+    },
+    {
+      "run_number": 15,
+      "configuration_id": "gps-denied-loop_and_map_reuse-150m-s6503",
+      "profile": "../configurations/gps-denied/gps-denied-loop_and_map_reuse-150m-s6503.json",
+      "mode": "loop_and_map_reuse",
+      "target_altitude_m": 150,
+      "seed": 6503
+    }
+  ]
+}
